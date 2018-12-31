@@ -7,7 +7,7 @@ export function loginByUsername(userName, password, userType) {
     userType
   }
   return request({
-    url: '/auth/auth/login',
+    url: '/auth/login',
     method: 'post',
     data
   })
@@ -22,7 +22,7 @@ export function logout() {
 
 export function getUserInfo() {
   return request({
-    url: '/auth/auth/user/info',
+    url: '/auth/user/info',
     method: 'get'
   })
 }
