@@ -98,6 +98,36 @@ export default new Router({
 
 export const asyncRouterMap = [
   {
+    path: 'system',
+    component: Layout,
+    redirect: 'noredirect',
+    name: '系统管理',
+    meta: {
+      title: '系统管理',
+      icon: 'system'
+    },
+    children: [
+      {
+        path: 'user',
+        component: () => import('@/views/example/create'),
+        name: '用户管理',
+        meta: { title: '用户管理', icon: 'system_user' }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/example/edit'),
+        name: '角色管理',
+        meta: { title: '角色管理', icon: 'system_role' }
+      },
+      {
+        path: 'permission',
+        component: () => import('@/views/example/list'),
+        name: '权限管理',
+        meta: { title: '权限管理', icon: 'system_permission' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/index',
