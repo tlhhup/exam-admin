@@ -1,10 +1,13 @@
 export default {
   route: {
     dashboard: 'Dashboard',
+    system: 'System',
+    user: 'User',
+    role: 'Role',
+    permission: 'Permission',
     introduction: 'Introduction',
     documentation: 'Documentation',
     guide: 'Guide',
-    permission: 'Permission',
     pagePermission: 'Page Permission',
     directivePermission: 'Directive Permission',
     icons: 'Icons',
