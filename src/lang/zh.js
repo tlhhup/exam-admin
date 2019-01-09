@@ -129,7 +129,15 @@ export default {
     draft: '草稿',
     delete: '删除',
     cancel: '取 消',
-    confirm: '确 定'
+    confirm: '确 定',
+    roleName: '角色名称',
+    description: '描述',
+    creator: '创建人',
+    roleValue: '角色值',
+    createTime: '创建时间',
+    active: '状态',
+    enable: '可用',
+    disable: '禁用'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

@@ -129,7 +129,15 @@ export default {
     draft: 'Draft',
     delete: 'Delete',
     cancel: 'Cancel',
-    confirm: 'Confirm'
+    confirm: 'Confirm',
+    roleName: 'RoleName',
+    description: 'Description',
+    creator: 'Creator',
+    roleValue: 'RoleValue',
+    createTime: 'CreateTime',
+    active: 'Active',
+    enable: 'Enable',
+    disable: 'Disable'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',
