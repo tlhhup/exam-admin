@@ -1,19 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input :placeholder="$t('table.title')" v-model="listQuery.title" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-select v-model="listQuery.importance" :placeholder="$t('table.importance')" clearable style="width: 90px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item"/>
-      </el-select>
-      <el-select v-model="listQuery.type" :placeholder="$t('table.type')" clearable class="filter-item" style="width: 130px">
-        <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key"/>
-      </el-select>
-      <el-select v-model="listQuery.sort" style="width: 140px" class="filter-item" @change="handleFilter">
-        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key"/>
-      </el-select>
+      <el-input :placeholder="$t('table.roleName')" v-model="listQuery.roleName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
+      <el-input :placeholder="$t('table.creator')" v-model="listQuery.creator" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
-      <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">{{ $t('table.export') }}</el-button>
     </div>
 
     <el-table
@@ -25,7 +16,7 @@
       highlight-current-row
       style="width: 100%;"
       @sort-change="sortChange">
-      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
+      <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
@@ -47,7 +38,7 @@
       </el-table-column>
       <el-table-column :label="$t('table.roleValue')" align="center" width="95">
         <template slot-scope="scope">
-          <span>{{ scope.row.roleValue }}</span>
+          <span>{{ scope.row.roleValue | roleValueFilter}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.createTime')" width="150px" align="center">
@@ -57,14 +48,14 @@
       </el-table-column>
       <el-table-column :label="$t('table.active')" class-name="status-col" width="100">
         <template slot-scope="scope">
-          <span v-if="scope.row.active==1">{{ $t('table.enable') }}</span>
+          <span v-if="scope.row.active">{{ $t('table.enable') }}</span>
           <span v-else>{{ $t('table.disable') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" icon="el-icon-edit" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row.id)">{{ $t('table.delete') }}
+          <el-button size="mini" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -72,45 +63,29 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="70px" style="width: 400px; margin-left:50px;">
-        <el-form-item :label="$t('table.type')" prop="type">
-          <el-select v-model="temp.type" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="40%">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 420px; margin-left:50px;">
+        <el-form-item :label="$t('table.roleName')" prop="roleName">
+          <el-input v-model="temp.roleName"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.roleValue')" prop="roleValue">
+          <el-select v-model="temp.roleValue" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in roleOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.date')" prop="timestamp">
-          <el-date-picker v-model="temp.timestamp" type="datetime" placeholder="Please pick a date"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.title')" prop="title">
-          <el-input v-model="temp.title"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.status')">
-          <el-select v-model="temp.status" class="filter-item" placeholder="Please select">
-            <el-option v-for="item in statusOptions" :key="item" :label="item" :value="item"/>
+        <el-form-item :label="$t('table.active')">
+          <el-select v-model="temp.active" class="filter-item" placeholder="Please select">
+            <el-option v-for="item in statusOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
           </el-select>
         </el-form-item>
-        <el-form-item :label="$t('table.importance')">
-          <el-rate v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max="3" style="margin-top:8px;"/>
-        </el-form-item>
-        <el-form-item :label="$t('table.remark')">
-          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.remark" type="textarea" placeholder="Please input"/>
+        <el-form-item :label="$t('table.description')">
+          <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.description" type="textarea" placeholder="Please input"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
       </div>
-    </el-dialog>
-
-    <el-dialog :visible.sync="dialogPvVisible" title="Reading statistics">
-      <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
-        <el-table-column prop="key" label="Channel"/>
-        <el-table-column prop="pv" label="Pv"/>
-      </el-table>
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogPvVisible = false">{{ $t('table.confirm') }}</el-button>
-      </span>
     </el-dialog>
 
   </div>
@@ -122,15 +97,18 @@ import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
-const calendarTypeOptions = [
-  { key: 'CN', display_name: 'China' },
-  { key: 'US', display_name: 'USA' },
-  { key: 'JP', display_name: 'Japan' },
-  { key: 'EU', display_name: 'Eurozone' }
+const statusOptions = [
+  { key: true, display_name: '可用' },
+  { key: false, display_name: '禁用' }
 ]
 
-// arr to obj ,such as { CN : "China", US : "USA" }
-const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
+const roleOptions = [
+  { key: -1, display_name: 'admin' },
+  { key: 0, display_name: 'normal' }
+]
+
+// arr to obj
+const roleOptionsKeyValue = roleOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
   return acc
 }, {})
@@ -140,8 +118,8 @@ export default {
   components: { Pagination },
   directives: { waves },
   filters: {
-    typeFilter(type) {
-      return calendarTypeKeyValue[type]
+    roleValueFilter(roleValue){
+      return roleOptionsKeyValue[roleValue]
     }
   },
   data() {
@@ -153,24 +131,17 @@ export default {
       listQuery: {
         page: 0,
         limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        roleName: undefined,
+        creator: undefined,
         sort: 'id'
       },
-      importanceOptions: [1, 2, 3],
-      calendarTypeOptions,
-      sortOptions: [{ label: 'ID Ascending', key: '+id' }, { label: 'ID Descending', key: '-id' }],
-      statusOptions: ['published', 'draft', 'deleted'],
-      showReviewer: false,
+      statusOptions,
+      roleOptions,
       temp: {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        type: '',
-        status: 'published'
+        roleName: '',
+        description: '',
+        roleValue: 0,
+        active: true
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -178,14 +149,9 @@ export default {
         update: 'Edit',
         create: 'Create'
       },
-      dialogPvVisible: false,
-      pvData: [],
       rules: {
-        type: [{ required: true, message: 'type is required', trigger: 'change' }],
-        timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
-        title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      },
-      downloadLoading: false
+        roleName: [{ required: true, message: 'roleName is required', trigger: 'blur' }]
+      }
     }
   },
   created() {
@@ -209,12 +175,6 @@ export default {
       this.listQuery.page = 0
       this.getList()
     },
-    handleDelete(id) {
-      this.$message({
-        message: '操作成功',
-        type: 'success'
-      })
-    },
     sortChange(data) {
       const { prop, order } = data
       if (prop === 'id') {
@@ -231,13 +191,10 @@ export default {
     },
     resetTemp() {
       this.temp = {
-        id: undefined,
-        importance: 1,
-        remark: '',
-        timestamp: new Date(),
-        title: '',
-        status: 'published',
-        type: ''
+        roleName: '',
+        description: '',
+        roleValue: 0,
+        active: true
       }
     },
     handleCreate() {
@@ -251,24 +208,33 @@ export default {
     createData() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          this.temp.author = 'vue-element-admin'
-          createArticle(this.temp).then(() => {
-            this.list.unshift(this.temp)
+          const tempData = Object.assign({}, this.temp)
+          tempData.createTime = new Date()
+          createRole(tempData).then(response => {
             this.dialogFormVisible = false
-            this.$notify({
-              title: '成功',
-              message: '创建成功',
-              type: 'success',
-              duration: 2000
-            })
+            const data=response.data
+            if(data.data){
+              this.$notify({
+                title: '成功',
+                message: '创建成功',
+                type: 'success',
+                duration: 2000
+              })
+              this.listQuery.page=0
+              this.getList()
+            }else{
+              this.$notify.error({
+                title: '失败',
+                message: '删除失败',
+                duration: 2000
+              });
+            }
           })
         }
       })
     },
     handleUpdate(row) {
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.timestamp = new Date(this.temp.timestamp)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
@@ -279,8 +245,8 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
-          updateArticle(tempData).then(() => {
+          tempData.createTime = new Date()
+          updateRole(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
@@ -300,43 +266,25 @@ export default {
       })
     },
     handleDelete(row) {
-      this.$notify({
-        title: '成功',
-        message: '删除成功',
-        type: 'success',
-        duration: 2000
-      })
-      const index = this.list.indexOf(row)
-      this.list.splice(index, 1)
-    },
-    handleFetchPv(pv) {
-      fetchPv(pv).then(response => {
-        this.pvData = response.data.pvData
-        this.dialogPvVisible = true
-      })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
-        this.downloadLoading = false
-      })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
+      deleteRole(row.id).then(response=>{
+        const data=response.data
+        if(data.data){
+          this.$notify({
+            title: '成功',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          const index = this.list.indexOf(row)
+          this.list.splice(index, 1)
+        }else{
+          this.$notify.error({
+            title: '失败',
+            message: '删除失败',
+            duration: 2000
+          });
         }
-      }))
+      })
     }
   }
 }
