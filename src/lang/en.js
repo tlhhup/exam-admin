@@ -1,7 +1,7 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    system: 'System',
+    auth: 'Authenticate',
     user: 'User',
     role: 'Role',
     permission: 'Permission',

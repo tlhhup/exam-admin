@@ -11,6 +11,7 @@ import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
+import authRouter from './modules/auth'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -97,36 +98,7 @@ export default new Router({
 })
 
 export const asyncRouterMap = [
-  {
-    path: '/system',
-    component: Layout,
-    redirect: 'noredirect',
-    name: 'system',
-    meta: {
-      title: 'system',
-      icon: 'system'
-    },
-    children: [
-      {
-        path: 'user',
-        component: () => import('@/views/system/user/index'),
-        name: 'user',
-        meta: { title: 'user', icon: 'system_user' }
-      },
-      {
-        path: 'role',
-        component: () => import('@/views/system/role/index'),
-        name: 'role',
-        meta: { title: 'role', icon: 'system_role' }
-      },
-      {
-        path: 'permission',
-        component: () => import('@/views/system/permission/index'),
-        name: 'permission',
-        meta: { title: 'permission', icon: 'system_permission' }
-      }
-    ]
-  },
+  authRouter,
   {
     path: '/permission',
     component: Layout,

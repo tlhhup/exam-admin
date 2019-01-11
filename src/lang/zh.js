@@ -1,7 +1,7 @@
 export default {
   route: {
     dashboard: '首页',
-    system: '系统管理',
+    auth: '认证中心',
     user: '用户管理',
     role: '角色管理',
     permission: '权限管理',

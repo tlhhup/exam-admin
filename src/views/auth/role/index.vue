@@ -18,7 +18,7 @@
       @sort-change="sortChange">
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{(listQuery.page-1)*listQuery.size+scope.$index+1}}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.roleName')" width="150px">
@@ -61,7 +61,7 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="40%">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="80px" style="width: 420px; margin-left:50px;">
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { fetchList, fetchRole, createRole, deleteRole, updateRole } from '@/api/system/role'
+import { fetchList, fetchRole, createRole, deleteRole, updateRole } from '@/api/auth/role'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -129,8 +129,8 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        page: 0,
-        limit: 20,
+        page: 1,
+        size: 20,
         roleName: undefined,
         creator: undefined,
         sort: 'id'
@@ -160,7 +160,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      // todo 会导致修改pageSize时，第二次才生效
+      const tempData = Object.assign({}, this.listQuery)
+      tempData.page = tempData.page - 1
+      fetchList(tempData).then(response => {
         const data=response.data.data
         this.list = data.items
         this.total = data.total
@@ -172,7 +175,7 @@ export default {
       })
     },
     handleFilter() {
-      this.listQuery.page = 0
+      this.listQuery.page = 1
       this.getList()
     },
     sortChange(data) {
@@ -218,9 +221,8 @@ export default {
                 title: '成功',
                 message: '创建成功',
                 type: 'success',
-                duration: 2000
+                duration: 1500
               })
-              this.listQuery.page=0
               this.getList()
             }else{
               this.$notify.error({
@@ -245,7 +247,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           const tempData = Object.assign({}, this.temp)
-          tempData.createTime = new Date()
           updateRole(tempData).then(() => {
             for (const v of this.list) {
               if (v.id === this.temp.id) {
@@ -259,7 +260,7 @@ export default {
               title: '成功',
               message: '更新成功',
               type: 'success',
-              duration: 2000
+              duration: 1500
             })
           })
         }
@@ -273,10 +274,9 @@ export default {
             title: '成功',
             message: '删除成功',
             type: 'success',
-            duration: 2000
+            duration: 1500
           })
-          const index = this.list.indexOf(row)
-          this.list.splice(index, 1)
+          this.getList()
         }else{
           this.$notify.error({
             title: '失败',
