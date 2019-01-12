@@ -177,6 +177,8 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
+      this.listQuery.creator = undefined
+      this.listQuery.roleName = undefined
     },
     sortChange(data) {
       const { prop, order } = data
