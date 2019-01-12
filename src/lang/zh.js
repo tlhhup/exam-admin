@@ -135,9 +135,17 @@ export default {
     creator: '创建人',
     roleValue: '角色值',
     createTime: '创建时间',
-    active: '状态',
+    active: '启用',
     enable: '可用',
-    disable: '禁用'
+    disable: '禁用',
+    userName: '用户名',
+    userType: '用户类型',
+    modifyPwd: '修改密码',
+    resetPwd: '重制密码',
+    password: '原始密码',
+    newPwd: '新密码',
+    confirmPwd: '确认密码',
+    prohibit: '禁用'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',

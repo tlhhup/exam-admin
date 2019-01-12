@@ -137,7 +137,15 @@ export default {
     createTime: 'CreateTime',
     active: 'Active',
     enable: 'Enable',
-    disable: 'Disable'
+    disable: 'Disable',
+    userName: 'UserName',
+    userType: 'UserType',
+    modifyPwd: 'ModifyPassword',
+    resetPwd: 'ResetPassword',
+    password: 'Old Password',
+    newPwd: 'New Password',
+    confirmPwd: 'Confirm Password',
+    prohibit: 'Prohibit'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

@@ -2,37 +2,61 @@ import request from '@/utils/request'
 
 export function fetchList(query) {
   return request({
-    url: '/authRole/list',
+    url: '/auth/authUser/list',
     method: 'get',
     params: query
   })
 }
 
-export function fetchUser(id) {
+export function fetchOne(id) {
   return request({
-    url: '/authRole/detail/' + id,
+    url: '/auth/authUser/detail/' + id,
     method: 'get'
   })
 }
 
-export function createUser(data) {
+export function createOne(data) {
   return request({
-    url: '/authRole/create',
+    url: '/auth/authUser/create',
     method: 'post',
     data
   })
 }
 
-export function deleteUser(id) {
+export function deleteOne(id) {
   return request({
-    url: '/authRole/delete/' + id,
+    url: '/auth/authUser/delete/' + id,
     method: 'delete'
   })
 }
 
-export function updateUser(data) {
+export function updateOne(data) {
   return request({
-    url: '/authRole/modify/' + data.id,
+    url: '/auth/authUser/modify/' + data.id,
+    method: 'put',
+    data
+  })
+}
+
+export function updatePassword(data) {
+  return request({
+    url: '/auth/authUser/modify/' + data.id,
+    method: 'put',
+    data
+  })
+}
+
+export function resetPassword(data) {
+  return request({
+    url: '/auth/authUser/modify/' + data.id,
+    method: 'put',
+    data
+  })
+}
+
+export function activeOne(data) {
+  return request({
+    url: '/auth/authUser/modify/' + data.id + '/active',
     method: 'put',
     data
   })
