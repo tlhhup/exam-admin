@@ -46,18 +46,16 @@ export function updatePassword(data) {
   })
 }
 
-export function resetPassword(data) {
+export function resetPassword(id) {
   return request({
-    url: '/auth/authUser/modify/' + data.id,
-    method: 'put',
-    data
+    url: '/auth/authUser/modify/' + id + '/resetPwd',
+    method: 'put'
   })
 }
 
 export function activeOne(data) {
   return request({
-    url: '/auth/authUser/modify/' + data.id + '/active',
-    method: 'put',
-    data
+    url: '/auth/authUser/modify/' + data.id + '/active/' + data.active,
+    method: 'put'
   })
 }

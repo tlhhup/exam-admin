@@ -227,7 +227,7 @@
           if(data.data){
             this.$notify({
               title: '成功',
-              message: '重制密码成功',
+              message: '重置密码成功',
               type: 'success',
               duration: 1500
             })
@@ -235,7 +235,7 @@
           }else{
             this.$notify.error({
               title: '失败',
-              message: '重制密码失败',
+              message: '重置密码失败',
               duration: 2000
             });
           }
