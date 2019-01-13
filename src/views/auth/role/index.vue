@@ -130,7 +130,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        size: 20,
+        size: 10,
         roleName: undefined,
         creator: undefined,
         sort: 'id'
@@ -160,10 +160,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      // todo 会导致修改pageSize时，第二次才生效
-      const tempData = Object.assign({}, this.listQuery)
-      tempData.page = tempData.page - 1
-      fetchList(tempData).then(response => {
+      fetchList(this.listQuery).then(response => {
         const data=response.data.data
         this.list = data.items
         this.total = data.total
