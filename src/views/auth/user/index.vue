@@ -59,14 +59,14 @@
         <el-form-item :label="$t('table.userName')" prop="userName">
           <el-input :disabled="true" v-model="temp.userName"/>
         </el-form-item>
-        <el-form-item :label="$t('table.password')" prop="password">
-          <el-input v-model="temp.pwd"/>
+        <el-form-item :label="$t('table.password')" prop="pwd">
+          <el-input type="password" v-model="temp.pwd"/>
         </el-form-item>
         <el-form-item :label="$t('table.newPwd')" prop="newPwd">
-          <el-input v-model="temp.newPwd"/>
+          <el-input type="password" v-model="temp.newPwd"/>
         </el-form-item>
         <el-form-item :label="$t('table.confirmPwd')" prop="confirmPwd">
-          <el-input v-model="temp.confirmPwd"/>
+          <el-input type="password" v-model="temp.confirmPwd"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -79,7 +79,7 @@
 </template>
 
 <script>
-  import { fetchList, updatePassword, resetPassword, activeOne} from '@/api/auth/user'
+  import { fetchList, checkPassword, updatePassword, resetPassword, activeOne} from '@/api/auth/user'
   import waves from '@/directive/waves' // Waves directive
   import { parseTime } from '@/utils'
   import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -111,6 +111,45 @@
       }
     },
     data() {
+      // validator begin
+      var validatePwd = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          const tempData={
+            id:this.temp.id,
+            password:this.temp.pwd
+          }
+          checkPassword(tempData).then(response=>{
+            const data=response.data
+            if(!data.data){
+              callback(new Error('原始密码不正确!'));
+            }else{
+              callback();
+            }
+          })
+        }
+      };
+      var validateNewPwd = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入密码'));
+        } else {
+          if (this.temp.confirmPwd !== '') {
+            this.$refs['dataForm'].validateField('confirmPwd');
+          }
+          callback();
+        }
+      };
+      var validateConfirmPwd = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.temp.newPwd) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+      // validator end
       return {
         tableKey: 0,
         list: null,
@@ -121,7 +160,7 @@
           size: 10,
           userName: undefined,
           userType: undefined,
-          sort: 'id'
+          sort: 'id,ASC'
         },
         statusOptions,
         userTypeOptions,
@@ -134,9 +173,18 @@
         dialogFormVisible: false,
         dialogStatus: '',
         rules: {
-          password: [{ required: true, message: 'Old Password is required', trigger: 'blur' }],
-          newPwd: [{ required: true, message: 'New Password is required', trigger: 'blur' }],
-          confirmPwd: [{ required: true, message: 'Confirm Password is required', trigger: 'blur' }]
+          pwd: [
+            { validator: validatePwd, trigger: 'blur' },
+            { required: true, message: 'Old Password is required', trigger: 'blur' }
+          ],
+          newPwd: [
+            { validator: validateNewPwd, trigger: 'blur' },
+            { required: true, message: 'New Password is required', trigger: 'blur' }
+          ],
+          confirmPwd: [
+            { validator: validateConfirmPwd, trigger: 'blur' },
+            { required: true, message: 'Confirm Password is required', trigger: 'blur' }
+          ]
         }
       }
     },
@@ -193,10 +241,13 @@
         })
       },
       updatePwd() {
+        // todo 会出现原始密码的二次校验
         this.$refs['dataForm'].validate((valid) => {
           if (valid) {
-            const tempData = Object.assign({}, this.temp)
-            //todo 校验两次输入密码
+            const tempData={
+              id:this.temp.id,
+              password:this.temp.pwd
+            }
             updatePassword(tempData).then(response => {
               this.dialogFormVisible = false
               const data=response.data

@@ -133,7 +133,7 @@ export default {
         size: 10,
         roleName: undefined,
         creator: undefined,
-        sort: 'id'
+        sort: 'id,ASC'
       },
       statusOptions,
       roleOptions,

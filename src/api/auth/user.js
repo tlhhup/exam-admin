@@ -38,9 +38,17 @@ export function updateOne(data) {
   })
 }
 
+export function checkPassword(data) {
+  return request({
+    url: '/auth/authUser/checkPassword',
+    method: 'post',
+    data
+  })
+}
+
 export function updatePassword(data) {
   return request({
-    url: '/auth/authUser/modify/' + data.id,
+    url: '/auth/authUser/modify/' + data.id + '/pwd',
     method: 'put',
     data
   })
