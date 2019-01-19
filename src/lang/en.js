@@ -141,6 +141,7 @@ export default {
     cancel: 'Cancel',
     confirm: 'Confirm',
     roleName: 'RoleName',
+    menuName: 'MenuName',
     description: 'Description',
     creator: 'Creator',
     roleValue: 'RoleValue',
@@ -156,6 +157,15 @@ export default {
     newPwd: 'New Password',
     confirmPwd: 'Confirm Password',
     prohibit: 'Prohibit'
+  },
+  tree: {
+    icon: 'Icon',
+    sort: 'Sort',
+    url: 'Ling',
+    permission: 'Permission',
+    iframe: 'Inner',
+    yes: 'Y',
+    no: 'N'
   },
   errorLog: {
     tips: 'Please click the bug icon in the upper right corner',

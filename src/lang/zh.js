@@ -141,6 +141,7 @@ export default {
     cancel: '取 消',
     confirm: '确 定',
     roleName: '角色名称',
+    menuName: '菜单名称',
     description: '描述',
     creator: '创建人',
     roleValue: '角色值',
@@ -156,6 +157,15 @@ export default {
     newPwd: '新密码',
     confirmPwd: '确认密码',
     prohibit: '禁用'
+  },
+  tree: {
+    icon: '图标',
+    sort: '排序',
+    url: '链接地址',
+    permission: '权限',
+    iframe: '内部菜单',
+    yes: '是',
+    no: '否'
   },
   errorLog: {
     tips: '请点击右上角bug小图标',
