@@ -19,7 +19,7 @@
         <el-input v-model="form.name" :placeholder="$t('table.menuName')" style="width: 460px;"/>
       </el-form-item>
       <el-form-item :label="$t('table.menuSort')" prop="sort">
-        <el-input v-model.number="form.sort" :placeholder="$t('common.sort')" style="width: 460px;"/>
+        <el-input v-model.number="form.sort" :placeholder="$t('common.sort')" style="width: 460px;" type="number"/>
       </el-form-item>
       <el-form-item :label="$t('table.iframe')" prop="iframe">
         <el-radio v-model="form.iframe" label="true">{{ $t('tree.yes') }}</el-radio>
@@ -31,7 +31,7 @@
       <el-form-item :label="$t('table.url')" prop="url">
         <el-input v-model="form.url" :placeholder="$t('table.url')" style="width: 460px;"/>
       </el-form-item>
-      <el-form-item :label="$t('table.parent')">
+      <el-form-item :label="$t('table.parent')" prop="parentId">
         <treeselect v-model="form.parentId" :options="menus" style="width: 460px;" :placeholder="$t('common.chooseParent')"/>
       </el-form-item>
     </el-form>
@@ -109,38 +109,53 @@
         })
       },
       doAdd() {
-        createMenu(this.form).then(res => {
+        const tempData = Object.assign({}, this.form)
+        tempData.createTime = new Date()
+        createMenu(tempData).then(res => {
           this.resetForm()
-          this.$notify({
-            title: '添加成功',
-            type: 'success',
-            duration: 2500
-          })
-          this.loading = false
-          setTimeout(() => {
-            this.$parent.getList()
-          }, 200)
-        }).catch(err => {
-          this.loading = false
-          console.log(err.response.data.message)
+          // 结果处理
+          const data=res.data
+          if(data.data){
+            this.$notify({
+              title: '成功',
+              message: '添加成功',
+              type: 'success',
+              duration: 1500
+            })
+            this.$parent.$parent.getList()
+          }else{
+            this.$notify.error({
+              title: '失败',
+              message: '添加失败',
+              duration: 2000
+            });
+          }
         })
+        this.loading = false
       },
       doEdit() {
-        updateMenu(this.form).then(res => {
+        const tempData = Object.assign({}, this.form)
+        updateMenu(tempData).then(res => {
           this.resetForm()
-          this.$notify({
-            title: '修改成功',
-            type: 'success',
-            duration: 2500
-          })
-          this.loading = false
-          setTimeout(() => {
+          // 结果处理
+          const data=res.data
+          if(data.data){
+            this.$notify({
+              title: '成功',
+              message: '修改成功',
+              type: 'success',
+              duration: 1500
+            })
             this.sup_this.getList()
-          }, 200)
-        }).catch(err => {
-          this.loading = false
-          console.log(err.response.data.message)
+          }else{
+            this.$notify.error({
+              title: '失败',
+              message: '修改失败',
+              duration: 2000
+            });
+          }
         })
+        this.loading = false
       },
       resetForm() {
         this.dialog = false

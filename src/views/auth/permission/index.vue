@@ -43,7 +43,7 @@
   import eHeader from './module/header'
   import edit from './module/edit'
   import {parseTime} from '@/utils'
-  import {fetchList, fetchMenu, createMenu, deleteMenu, updateMenu} from '@/api/auth/menu'
+  import {fetchList, deleteMenu} from '@/api/auth/menu'
 
   export default {
     name: '权限列表',
@@ -68,8 +68,35 @@
         })
       },
       handleDelete(row) {
-        // todo 删除
-        this.$message.info('删除')
+        let message='此操作将永久删除该数据, 是否继续?'
+        if(row.children!=null&&row.children.length>0){
+          message='此操作将永久删除该数据及所有子菜单, 是否继续?'
+        }
+        this.$confirm(message, '提示', {
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          deleteMenu(row.id).then(res=>{
+            const data=res.data
+            if(data.data){
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+              this.getList()
+            }else{
+              this.$notify.error({
+                title: '失败',
+                message: '删除失败',
+                duration: 2000
+              });
+            }
+          })
+        }).catch(() => {
+
+        });
       }
     },
     data() {

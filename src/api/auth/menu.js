@@ -33,7 +33,7 @@ export function deleteMenu(id) {
 export function updateMenu(data) {
   return request({
     url: '/auth/authPermission/modify/' + data.id,
-    method: 'put',
+    method: 'post',
     data
   })
 }
