@@ -77,6 +77,13 @@ export default {
     i18n: 'I18n',
     externalLink: 'External Link'
   },
+  common: {
+    chooseIcon: 'Choose a icon',
+    sort: 'The smaller the serial number, the higher the front',
+    chooseParent: 'Choose parent',
+    addMenu: 'Add Menu',
+    editMenu: 'Edit Menu'
+  },
   navbar: {
     logOut: 'Log Out',
     dashboard: 'Dashboard',
@@ -142,6 +149,12 @@ export default {
     confirm: 'Confirm',
     roleName: 'RoleName',
     menuName: 'MenuName',
+    menuIcon: 'MenuIcon',
+    menuSort: 'MenuSort',
+    iframe: 'Inner menu',
+    permission: 'Permission',
+    url: 'Link',
+    parent: 'Parent',
     description: 'Description',
     creator: 'Creator',
     roleValue: 'RoleValue',

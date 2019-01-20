@@ -77,6 +77,13 @@ export default {
     i18n: '国际化',
     externalLink: '外链'
   },
+  common: {
+    chooseIcon: '点击选择图标',
+    sort: '序号越小越靠前',
+    chooseParent: '选择上级类目',
+    addMenu: '新增菜单',
+    editMenu: '编辑菜单'
+  },
   navbar: {
     logOut: '退出登录',
     dashboard: '首页',
@@ -142,6 +149,12 @@ export default {
     confirm: '确 定',
     roleName: '角色名称',
     menuName: '菜单名称',
+    menuIcon: '菜单图标',
+    menuSort: '菜单排序',
+    iframe: '内部菜单',
+    permission: '菜单权限',
+    url: '链接地址',
+    parent: '上级类目',
     description: '描述',
     creator: '创建人',
     roleValue: '角色值',

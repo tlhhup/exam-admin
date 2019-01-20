@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function fetchList() {
+export function fetchList(query) {
   return request({
     url: '/auth/authPermission/list',
-    method: 'get'
+    method: 'get',
+    params: query
   })
 }
 

@@ -1,13 +1,9 @@
 <template>
   <div class="app-container">
 
-    <div class="filter-container">
-      <el-input :placeholder="$t('table.menuName')" v-model="listQuery.name" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
-      <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
-    </div>
+    <eHeader :menus="menus" :query="listQuery"/>
 
-    <tree-table :data="list" :columns="columns" border>
+    <tree-table :treeLoading="treeLoading" :data="list" :columns="columns" border>
       <el-table-column prop="icon" :label="$t('tree.icon')" align="center" width="80px">
         <template slot-scope="scope">
           <svg-icon :icon-class="scope.row.icon"/>
@@ -31,9 +27,9 @@
           <span>{{ scope.row.createTime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" width="230" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" width="230" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" icon="el-icon-edit" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
+          <edit :menus="menus" :data="scope.row" :sup_this="sup_this"/>
           <el-button type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
         </template>
       </el-table-column>
@@ -44,34 +40,36 @@
 
 <script>
   import treeTable from '@/components/TreeTable'
-  import waves from '@/directive/waves' // Waves directive
+  import eHeader from './module/header'
+  import edit from './module/edit'
   import {parseTime} from '@/utils'
   import {fetchList, fetchMenu, createMenu, deleteMenu, updateMenu} from '@/api/auth/menu'
 
   export default {
     name: '权限列表',
-    components: {treeTable},
-    directives: { waves },
+    components: {treeTable, eHeader, edit},
     created() {
       this.getList()
     },
     methods: {
       getList() {
-        fetchList().then(response => {
+        this.treeLoading=true
+        fetchList(this.listQuery).then(response => {
           this.list = response.data.data
+          //选择菜单
+          const menu = { id: 0, label: '顶级类目', children: [] }
+          menu.children = this.list
+          this.menus=[]
+          this.menus.push(menu)
+
+          setTimeout(() => {
+            this.treeLoading = false
+          }, 1.5 * 1000)
         })
       },
-      handleFilter(){
-        this.$message.info("搜索")
-      },
-      handleCreate(){
-        this.$message.info("新增")
-      },
       handleDelete(row) {
+        // todo 删除
         this.$message.info('删除')
-      },
-      handleUpdate(row) {
-        this.$message.info('编辑')
       }
     },
     data() {
@@ -83,7 +81,10 @@
             width: 200
           }
         ],
+        menus:[],
         list: [],
+        treeLoading: true,
+        sup_this:this,
         listQuery:{
           name:undefined
         }

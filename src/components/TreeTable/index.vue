@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="formatData" :row-style="showRow" v-bind="$attrs">
+  <el-table v-loading="treeLoading" :data="formatData" :row-style="showRow" v-bind="$attrs">
     <el-table-column v-if="columns.length===0" width="150">
       <template slot-scope="scope">
         <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
@@ -43,6 +43,10 @@ export default {
     columns: {
       type: Array,
       default: () => []
+    },
+    treeLoading: {
+      type: Boolean,
+      default: false
     },
     evalFunc: Function,
     evalArgs: Array,
