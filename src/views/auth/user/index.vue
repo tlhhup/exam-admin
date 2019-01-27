@@ -113,7 +113,7 @@
     data() {
       // validator begin
       var validatePwd = (rule, value, callback) => {
-        if (value === '') {
+        if (value==undefined|| value === '') {
           callback(new Error('请输入密码'));
         } else {
           const tempData={
@@ -131,7 +131,7 @@
         }
       };
       var validateNewPwd = (rule, value, callback) => {
-        if (value === '') {
+        if (value==undefined||value === '') {
           callback(new Error('请输入密码'));
         } else {
           if (this.temp.confirmPwd !== '') {
@@ -141,7 +141,7 @@
         }
       };
       var validateConfirmPwd = (rule, value, callback) => {
-        if (value === '') {
+        if (value==undefined||value === '') {
           callback(new Error('请再次输入密码'));
         } else if (value !== this.temp.newPwd) {
           callback(new Error('两次输入密码不一致!'));
