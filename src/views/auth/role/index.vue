@@ -81,6 +81,9 @@
         <el-form-item :label="$t('table.description')">
           <el-input :autosize="{ minRows: 2, maxRows: 4}" v-model="temp.description" type="textarea" placeholder="Please input"/>
         </el-form-item>
+        <el-form-item :label="$t('table.permission')">
+          <treeselect v-model="temp.pIds" :multiple="true" :options="menus" valueConsistsOf="ALL"/>
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
@@ -93,9 +96,12 @@
 
 <script>
 import { fetchList, fetchRole, createRole, deleteRole, updateRole } from '@/api/auth/role'
+import { fetchList as menuList } from '@/api/auth/menu'
 import waves from '@/directive/waves' // Waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 const statusOptions = [
   { key: true, display_name: '可用' },
@@ -115,7 +121,7 @@ const roleOptionsKeyValue = roleOptions.reduce((acc, cur) => {
 
 export default {
   name: 'ComplexTable',
-  components: { Pagination },
+  components: { Pagination, Treeselect },
   directives: { waves },
   filters: {
     roleValueFilter(roleValue){
@@ -127,6 +133,7 @@ export default {
       tableKey: 0,
       list: null,
       total: 0,
+      menus: null,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -141,7 +148,8 @@ export default {
         roleName: '',
         description: '',
         roleValue: 0,
-        active: true
+        active: true,
+        pIds:[]
       },
       dialogFormVisible: false,
       dialogStatus: '',
@@ -156,6 +164,9 @@ export default {
   },
   created() {
     this.getList()
+    menuList({}).then(response => {
+      this.menus=response.data.data
+    })
   },
   methods: {
     getList() {
@@ -196,7 +207,8 @@ export default {
         roleName: '',
         description: '',
         roleValue: 0,
-        active: true
+        active: true,
+        pIds:[]
       }
     },
     handleCreate() {
