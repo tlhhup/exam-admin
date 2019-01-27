@@ -67,3 +67,11 @@ export function activeOne(data) {
     method: 'put'
   })
 }
+
+export function assignRole(data) {
+  return request({
+    url: '/auth/authUser/assignRole',
+    method: 'put',
+    data
+  })
+}

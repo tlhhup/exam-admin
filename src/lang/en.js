@@ -165,6 +165,7 @@ export default {
     userName: 'UserName',
     userType: 'UserType',
     modifyPwd: 'ModifyPassword',
+    assignRole: 'Assign Role',
     resetPwd: 'ResetPassword',
     password: 'Old Password',
     newPwd: 'New Password',

@@ -6,6 +6,7 @@
         <el-option v-for="item in userTypeOptions" :key="item.key" :label="item.display_name" :value="item.key"/>
       </el-select>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+      <el-button v-waves class="filter-item" type="primary" icon="el-icon-edit" @click="handleAssignRole">{{ $t('table.assignRole') }}</el-button>
     </div>
 
     <el-table
@@ -15,6 +16,7 @@
       border
       fit
       highlight-current-row
+      @current-change="handleCurrentChange"
       style="width: 100%;"
       @sort-change="sortChange">
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="100">
@@ -75,11 +77,34 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="$t('table.assignRole')" :visible.sync="roleFormVisible" width="30%">
+      <el-form ref="assignRoleForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 320px; margin-left:50px;">
+        <el-form-item :label="$t('table.userName')" prop="userName">
+          <el-input :disabled="true" v-model="roleTemp.userName"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.roleName')" prop="rIds">
+          <el-select v-model="roleTemp.rIds" multiple placeholder="请选择">
+            <el-option
+              v-for="item in roles"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id">
+            </el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="roleFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="assignRole()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { fetchList, checkPassword, updatePassword, resetPassword, activeOne} from '@/api/auth/user'
+  import { fetchList, checkPassword, updatePassword, resetPassword, activeOne, assignRole} from '@/api/auth/user'
+  import { fetchAll as roleList } from '@/api/auth/role'
   import waves from '@/directive/waves' // Waves directive
   import { parseTime } from '@/utils'
   import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -153,6 +178,7 @@
       return {
         tableKey: 0,
         list: null,
+        roles: null,
         total: 0,
         listLoading: true,
         listQuery: {
@@ -170,6 +196,13 @@
           newPwd:'',
           confirmPwd:''
         },
+        roleTemp:{
+          uId:undefined,
+          type:undefined,
+          userName:'',
+          rIds:[]
+        },
+        roleFormVisible:false,//分配角色
         dialogFormVisible: false,
         dialogStatus: '',
         rules: {
@@ -190,6 +223,9 @@
     },
     created() {
       this.getList()
+      roleList().then(response => {
+        this.roles=response.data.data
+      })
     },
     methods: {
       getList() {
@@ -304,6 +340,56 @@
               duration: 1500
             })
             this.getList()
+          }else{
+            this.$notify.error({
+              title: '失败',
+              message: '操作失败',
+              duration: 2000
+            });
+          }
+        })
+      },
+      handleCurrentChange(currentRow){//处理表格选中事件
+        if(currentRow!=null) {
+          this.roleTemp.uId = currentRow.id
+          this.roleTemp.type = currentRow.userType
+          this.roleTemp.userName = currentRow.userName
+        }
+      },
+      resetRoleTemp(){
+        this.roleTemp={
+            uId:undefined,
+            type:undefined,
+            userName:'',
+            rIds:[]
+        }
+      },
+      handleAssignRole(){
+        if(this.roleTemp.uId==undefined){
+          this.$notify.error('请选择需要分配角色的用户!')
+        }else if(this.roleTemp.type==3){
+          this.$notify.info("学生账号不用分配角色!")
+        }else{
+          this.roleFormVisible = true
+        }
+      },
+      assignRole(){
+        const tempData={
+          uId:this.roleTemp.uId,
+          rIds:this.roleTemp.rIds
+        }
+        this.resetRoleTemp()
+        this.roleFormVisible=false
+        //this.$refs.assignRoleForm.setCurrentRow()
+        assignRole(tempData).then(response=>{
+          const data=response.data
+          if(data.data){
+            this.$notify({
+              title: '成功',
+              message: '操作成功',
+              type: 'success',
+              duration: 1500
+            })
           }else{
             this.$notify.error({
               title: '失败',

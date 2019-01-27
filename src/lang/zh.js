@@ -165,6 +165,7 @@ export default {
     userName: '用户名',
     userType: '用户类型',
     modifyPwd: '修改密码',
+    assignRole: '分配角色',
     resetPwd: '重置密码',
     password: '原始密码',
     newPwd: '新密码',

@@ -103,6 +103,7 @@ export const asyncRouterMap = [
   authRouter,
   monitorRouter,
   allocativeRouter,
+  /**
   {
     path: '/permission',
     component: Layout,
@@ -148,7 +149,6 @@ export const asyncRouterMap = [
     ]
   },
 
-  /** When your routing table is too long, you can split it into small modules**/
   componentsRouter,
   chartsRouter,
   nestedRouter,
@@ -336,6 +336,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
+  **/
   { path: '*', redirect: '/404', hidden: true }
 ]

@@ -8,6 +8,13 @@ export function fetchList(query) {
   })
 }
 
+export function fetchAll() {
+  return request({
+    url: '/auth/authRole/roles',
+    method: 'get'
+  })
+}
+
 export function fetchRole(id) {
   return request({
     url: '/auth/authRole/detail/' + id,
