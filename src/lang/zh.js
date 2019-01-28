@@ -170,7 +170,11 @@ export default {
     password: '原始密码',
     newPwd: '新密码',
     confirmPwd: '确认密码',
-    prohibit: '禁用'
+    prohibit: '禁用',
+    envName: '环境名',
+    registryAddress: '注册中心地址',
+    configServerName: '配置中心的访问地址',
+    contextPath: '配置中心根路径'
   },
   tree: {
     icon: '图标',

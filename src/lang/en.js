@@ -170,7 +170,11 @@ export default {
     password: 'Old Password',
     newPwd: 'New Password',
     confirmPwd: 'Confirm Password',
-    prohibit: 'Prohibit'
+    prohibit: 'Prohibit',
+    envName: 'Env Name',
+    registryAddress: 'Registry Address',
+    configServerName: 'Config Server Name',
+    contextPath: 'Config Server ContextPath'
   },
   tree: {
     icon: 'Icon',

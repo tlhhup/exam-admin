@@ -3,7 +3,7 @@ import Layout from '@/views/layout/Layout'
 const allocativeRouter = {
   path: '/config',
   component: Layout,
-  redirect: 'noredirect',
+  redirect: '/config/environment/env',
   name: '配置中心',
   meta: {
     title: 'configCenter',
@@ -12,25 +12,26 @@ const allocativeRouter = {
   children: [
     {
       path: 'environment',
+      component: () => import('@/views/allocative/environment/index'),
       name: 'environment',
       meta: { title: 'environment' },
-      redirect: 'noredirect',
+      redirect: '/config/environment/env',
       children: [
         {
-          path: 'environment',
-          component: () => import('@/views/auth/user/index'),
+          path: 'env',
+          component: () => import('@/views/allocative/environment/env'),
           name: 'environment',
           meta: { title: 'environment', icon: 'env' }
         },
         {
           path: 'environmentParam',
-          component: () => import('@/views/auth/role/index'),
+          component: () => import('@/views/allocative/environment/param'),
           name: 'environmentParam',
           meta: { title: 'environmentParam', icon: 'config' }
         },
         {
           path: 'encryption',
-          component: () => import('@/views/auth/permission/index'),
+          component: () => import('@/views/allocative/environment/encryption'),
           name: 'encryption',
           meta: { title: 'encryption', icon: 'system_permission' }
         }
@@ -38,19 +39,20 @@ const allocativeRouter = {
     },
     {
       path: 'configCenter',
+      component: () => import('@/views/allocative/config/index'),
       name: 'configCenter',
       meta: { title: 'configCenter' },
-      redirect: 'noredirect',
+      redirect: '/config/configCenter/project',
       children: [
         {
           path: 'project',
-          component: () => import('@/views/auth/user/index'),
+          component: () => import('@/views/allocative/config/project'),
           name: 'project',
           meta: { title: 'project', icon: 'project' }
         },
         {
           path: 'config',
-          component: () => import('@/views/auth/role/index'),
+          component: () => import('@/views/allocative/config/config'),
           name: 'config',
           meta: { title: 'config', icon: 'param' }
         }
