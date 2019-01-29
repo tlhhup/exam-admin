@@ -174,7 +174,9 @@ export default {
     envName: '环境名',
     registryAddress: '注册中心地址',
     configServerName: '配置中心的访问地址',
-    contextPath: '配置中心根路径'
+    contextPath: '配置中心根路径',
+    paramKey: '配置Key',
+    paramValue: '配置Value'
   },
   tree: {
     icon: '图标',

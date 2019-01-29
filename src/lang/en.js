@@ -174,7 +174,9 @@ export default {
     envName: 'Env Name',
     registryAddress: 'Registry Address',
     configServerName: 'Config Server Name',
-    contextPath: 'Config Server ContextPath'
+    contextPath: 'Config Server ContextPath',
+    paramKey: 'Param Key',
+    paramValue: 'Param Value'
   },
   tree: {
     icon: 'Icon',
