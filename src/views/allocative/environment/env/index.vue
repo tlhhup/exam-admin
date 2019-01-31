@@ -12,9 +12,7 @@
       :data="list"
       border
       fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange">
+      style="width: 100%;">
       <el-table-column type="index" :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80"/>
       <el-table-column :label="$t('table.envName')" width="150px" align="center">
         <template slot-scope="scope">
@@ -84,8 +82,7 @@
         total: 0,
         listLoading: true,
         listQuery: {
-          envName: undefined,
-          sort: 'id,ASC'
+          envName: undefined
         },
         temp: {
           name: '',
@@ -120,22 +117,14 @@
         })
       },
       handleFilter() {
-        this.getList()
-        this.listQuery.envName = undefined
-      },
-      sortChange(data) {
-        const { prop, order } = data
-        if (prop === 'id') {
-          this.sortByID(order)
+        if(this.listQuery.envName==undefined){
+          this.getList()
+        }else{
+          this.list=this.list.filter(item=>{
+            return item.name.indexOf(this.listQuery.envName,0)!=-1
+          })
+          this.listQuery.envName=undefined
         }
-      },
-      sortByID(order) {
-        if (order === 'ascending') {
-          this.listQuery.sort = 'id,ASC'
-        } else {
-          this.listQuery.sort = 'id,DESC'
-        }
-        this.handleFilter()
       },
       resetTemp() {
         this.temp = {

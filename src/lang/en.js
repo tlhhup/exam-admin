@@ -177,7 +177,11 @@ export default {
     contextPath: 'Config Server ContextPath',
     paramKey: 'Param Key',
     paramValue: 'Param Value',
-    encryptionName: 'Encryption Name'
+    encryptionName: 'Encryption Name',
+    projectName: 'Project Name',
+    deployEnv: 'Deploy Environment',
+    deployLabel: 'Deploy Label',
+    labelHint: 'Please input project label'
   },
   tree: {
     icon: 'Icon',

@@ -15,9 +15,7 @@
       :data="list"
       border
       fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange">
+      style="width: 100%;">
       <el-table-column type="index" :label="$t('table.id')" prop="id" sortable="custom" align="center" width="80"/>
       <el-table-column :label="$t('table.paramKey')" width="400px" align="center">
         <template slot-scope="scope">
@@ -74,8 +72,7 @@
         listLoading: true,
         listQuery: {
           envId:undefined,
-          pKey: undefined,
-          sort: 'id,ASC'
+          pKey: undefined
         },
         temp: {
           pKey: '',
@@ -122,22 +119,14 @@
         }, 1.5 * 1000)
       },
       handleFilter() {
-        this.getList()
-        this.listQuery.pKey = undefined
-      },
-      sortChange(data) {
-        const { prop, order } = data
-        if (prop === 'id') {
-          this.sortByID(order)
+        if(this.listQuery.pKey==undefined){
+          this.getList()
+        }else{
+          this.list=this.list.filter(item=>{
+            return item.pKey.indexOf(this.listQuery.pKey,0)!=-1
+          })
+          this.listQuery.pKey=undefined
         }
-      },
-      sortByID(order) {
-        if (order === 'ascending') {
-          this.listQuery.sort = 'id,ASC'
-        } else {
-          this.listQuery.sort = 'id,DESC'
-        }
-        this.handleFilter()
       },
       resetTemp() {
         this.temp = {

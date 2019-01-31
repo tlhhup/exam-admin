@@ -12,9 +12,7 @@
       :data="list"
       border
       fit
-      highlight-current-row
-      style="width: 100%;"
-      @sort-change="sortChange">
+      style="width: 100%;">
       <el-table-column type="index" :label="$t('table.id')" prop="id" sortable="custom" align="center" width="100"/>
       <el-table-column :label="$t('table.encryptionName')" min-width="150px" align="center">
         <template slot-scope="scope">
@@ -60,8 +58,7 @@
         total: 0,
         listLoading: true,
         listQuery: {
-          eKey: undefined,
-          sort: 'id,ASC'
+          eKey: undefined
         },
         temp: {
           eKey: ''
@@ -93,22 +90,14 @@
         })
       },
       handleFilter() {
-        this.getList()
-        this.listQuery.eKey = undefined
-      },
-      sortChange(data) {
-        const { prop, order } = data
-        if (prop === 'id') {
-          this.sortByID(order)
+        if(this.listQuery.eKey==undefined){
+          this.getList()
+        }else{
+          this.list=this.list.filter(item=>{
+            return item.ekey.indexOf(this.listQuery.eKey,0)!=-1
+          })
+          this.listQuery.eKey=undefined
         }
-      },
-      sortByID(order) {
-        if (order === 'ascending') {
-          this.listQuery.sort = 'id,ASC'
-        } else {
-          this.listQuery.sort = 'id,DESC'
-        }
-        this.handleFilter()
       },
       resetTemp() {
         this.temp = {

@@ -177,7 +177,11 @@ export default {
     contextPath: '配置中心根路径',
     paramKey: '配置Key',
     paramValue: '配置Value',
-    encryptionName: '加密Key名称'
+    encryptionName: '加密Key名称',
+    projectName: '项目名称',
+    deployEnv: '部署环境',
+    deployLabel: '配置版本',
+    labelHint: '请输入项目版本'
   },
   tree: {
     icon: '图标',

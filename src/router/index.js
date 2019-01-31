@@ -101,8 +101,8 @@ export default new Router({
 
 export const asyncRouterMap = [
   authRouter,
-  monitorRouter,
   allocativeRouter,
+  monitorRouter,
   /**
   {
     path: '/permission',
