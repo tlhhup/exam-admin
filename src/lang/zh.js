@@ -176,7 +176,8 @@ export default {
     configServerName: '配置中心的访问地址',
     contextPath: '配置中心根路径',
     paramKey: '配置Key',
-    paramValue: '配置Value'
+    paramValue: '配置Value',
+    encryptionName: '加密Key名称'
   },
   tree: {
     icon: '图标',

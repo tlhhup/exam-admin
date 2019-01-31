@@ -176,7 +176,8 @@ export default {
     configServerName: 'Config Server Name',
     contextPath: 'Config Server ContextPath',
     paramKey: 'Param Key',
-    paramValue: 'Param Value'
+    paramValue: 'Param Value',
+    encryptionName: 'Encryption Name'
   },
   tree: {
     icon: 'Icon',
