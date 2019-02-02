@@ -20,7 +20,7 @@ const monitorRouter = {
       meta: { title: 'monitorApp', icon: 'monitor_app' }
     },
     {
-      path: 'http://localhost:10015/#/wallboard',
+      path: 'http://localhost:9411/',
       name: 'monitorTrace',
       meta: { title: 'monitorTrace', icon: 'monitor_trace' }
     }
