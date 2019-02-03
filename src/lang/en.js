@@ -181,7 +181,20 @@ export default {
     projectName: 'Project Name',
     deployEnv: 'Deploy Environment',
     deployLabel: 'Deploy Label',
-    labelHint: 'Please input project label'
+    labelHint: 'Please input project label:',
+    projectInfo: 'Project Info:',
+    configDetail: 'Configuration Detail:',
+    fetchConfig: 'Fetch Configuration',
+    tableModel: 'Table Model',
+    yamlModel: 'YAML Model',
+    iniModel: 'Property Model',
+    addConfig: 'Add Config',
+    save: 'Save',
+    replace: 'Replace',
+    replaceAll: 'Replace All',
+    encryptionAll: 'Encryption All',
+    encryptionKeyList: 'Encryption Key List',
+    envParam: ' Env Param'
   },
   tree: {
     icon: 'Icon',

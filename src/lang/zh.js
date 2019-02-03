@@ -181,7 +181,20 @@ export default {
     projectName: '项目名称',
     deployEnv: '部署环境',
     deployLabel: '配置版本',
-    labelHint: '请输入项目版本'
+    labelHint: '请输入项目版本',
+    projectInfo: '项目信息',
+    configDetail: '当前存储配置详情:',
+    fetchConfig: '配置中心获取',
+    tableModel: '列表模式',
+    yamlModel: 'yml模式',
+    iniModel: 'property模式',
+    addConfig: '新增配置',
+    save: '保存',
+    replace: '替换',
+    replaceAll: '一键替换',
+    encryptionAll: '一键加密',
+    encryptionKeyList: '加密Key清单',
+    envParam: '环境参数'
   },
   tree: {
     icon: '图标',
