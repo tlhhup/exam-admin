@@ -51,7 +51,7 @@ const allocativeRouter = {
           meta: { title: 'project', icon: 'project' }
         },
         {
-          path: 'config',
+          path: 'configParam',
           component: () => import('@/views/allocative/config/config'),
           name: 'config',
           meta: { title: 'config', icon: 'param' }

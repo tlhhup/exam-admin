@@ -47,10 +47,10 @@
                           <el-input v-model="scope.row.value" placeholder="请输入value..."></el-input>
                         </template>
                       </el-table-column>
-                      <el-table-column align="center" prop="address" :label="$t('table.actions')">
+                      <el-table-column align="center" prop="address" :label="$t('table.actions')" width="160">
                         <template slot-scope="scope">
-                          <el-button type="primary" round icon="el-icon-view" @click="isLock(scope.item)?unLock(scope.item):lock(scope.item)"/>
-                          <el-button type="danger"  round icon="el-icon-delete" @click="handleDelete(scope.$index)"/>
+                          <el-button type="primary" circle icon="el-icon-view" @click="isLock(scope.item)?unLock(scope.item):lock(scope.item)"/>
+                          <el-button type="danger"  circle icon="el-icon-delete" @click="handleDelete(scope.$index)"/>
                         </template>
                       </el-table-column>
                     </el-table>
@@ -334,7 +334,6 @@
             this.configType=3
             break;
         }
-        console.info(this.configType)
         this.handleFilter()
       },
       handleFilter(){
@@ -552,12 +551,6 @@
       },
       isArray(o) {
         return Object.prototype.toString.call(o) == '[object Array]';
-      },
-      onMounted(editor) {
-        this.editor = editor;
-      },
-      onCodeChange(editor) {
-        console.log(editor.getValue());
       }
     }
   }
