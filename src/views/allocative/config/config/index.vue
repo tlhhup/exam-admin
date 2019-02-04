@@ -59,23 +59,17 @@
                   <el-tab-pane name="second">
                     <span slot="label"><i class="el-icon-upload"></i> {{$t('table.yamlModel')}}</span>
                     <MonacoEditor
-                      :min-height="240"
-                      width="100%"
+                      class="editor"
                       v-model="code"
-                      :editorOptions="editorOptions"
-                      @mounted="onMounted"
-                      @codeChange="onCodeChange">
+                      :options="editorOptions">
                     </MonacoEditor>
                   </el-tab-pane>
                   <el-tab-pane name="third">
                     <span slot="label"><i class="el-icon-tickets"></i> {{$t('table.iniModel')}}</span>
                     <MonacoEditor
-                      width="500"
-                      :min-height="240"
+                      class="editor"
                       v-model="code_properties"
-                      :editorOptions="editorOptionsProperties"
-                      @mounted="onMounted"
-                      @codeChange="onCodeChange">
+                      :options="editorOptionsProperties">
                     </MonacoEditor>
                   </el-tab-pane>
                 </el-tabs>
@@ -157,7 +151,7 @@
   import { findProperties, saveProperties, encryptProperty, decryptProperty, fetchFromConfigServer } from '@/api/allocative/config'
   import { findList as encryList } from '@/api/allocative/encryption'
   import { findEnvParams } from '@/api/allocative/param'
-  import MonacoEditor from 'vue-monaco-editor'
+  import MonacoEditor from 'vue-monaco'
   import * as yaml from 'js-yaml'
   import waves from '@/directive/waves' // Waves directive
 
@@ -597,5 +591,10 @@
 
   .el-container:nth-child(7) .el-aside {
     line-height: 320px;
+  }
+
+  .editor {
+    width: 100%;
+    min-height: 240px;
   }
 </style>
