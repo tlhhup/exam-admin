@@ -194,7 +194,9 @@ export default {
     replaceAll: '一键替换',
     encryptionAll: '一键加密',
     encryptionKeyList: '加密Key清单',
-    envParam: '环境参数'
+    envParam: '环境参数',
+    fresh: '刷新配置',
+    freshService: '实例信息'
   },
   tree: {
     icon: '图标',

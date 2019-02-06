@@ -66,3 +66,17 @@ export function deleteProjectEnv(projectId, envId) {
   })
 }
 
+export function findServiceList(serviceId) {
+  return request({
+    url: '/xhr/service?serviceId=' + serviceId,
+    method: 'get'
+  })
+}
+
+export function refreshConfig(destination) {
+  return request({
+    url: '/xhr/refresh/' + destination,
+    method: 'post'
+  })
+}
+

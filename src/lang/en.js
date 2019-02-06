@@ -194,7 +194,9 @@ export default {
     replaceAll: 'Replace All',
     encryptionAll: 'Encryption All',
     encryptionKeyList: 'Encryption Key List',
-    envParam: ' Env Param'
+    envParam: ' Env Param',
+    fresh: 'Refresh',
+    freshService: 'Service'
   },
   tree: {
     icon: 'Icon',

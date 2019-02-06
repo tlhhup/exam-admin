@@ -29,11 +29,11 @@
           <el-tag v-for="label in scope.row.labels" :key="label.name" style="margin-left: 4px;">{{label.name}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column :label="$t('table.actions')" align="center" width="400" class-name="small-padding fixed-width">
         <template slot-scope="scope">
+          <el-button type="primary" size="medium" icon="el-icon-edit" @click="handleRefresh(scope.row)">{{ $t('table.fresh') }}</el-button>
           <el-button type="primary" size="medium" icon="el-icon-edit" @click="handleUpdate(scope.row)">{{ $t('table.edit') }}</el-button>
-          <el-button size="medium" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('table.delete') }}
-          </el-button>
+          <el-button size="medium" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row)">{{ $t('table.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -65,12 +65,30 @@
       </div>
     </el-dialog>
 
+    <el-dialog :title="$t('table.fresh')" :visible.sync="refreshFormVisible" width="40%">
+      <el-form ref="refreshForm" :model="service" label-position="left" label-width="100px" style="width: 500px; margin-left:50px;">
+        <el-form-item :label="$t('table.projectName')" prop="name">
+          <el-input v-model="service.name" :placeholder="$t('table.projectName')" readonly/>
+        </el-form-item>
+        <el-form-item :label="$t('table.freshService')" prop="instances">
+          <el-radio-group v-model="service.port">
+            <el-radio v-for="instance in instances" :label="instance.port" border>{{instance.port}}</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="refreshFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="refreshConfig">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
   import { findAllEnv } from '@/api/allocative/env'
   import { findList, createProject, deleteProject, updateProject, addProjectLabel, deleteProjectLabel, addProjectEnv, deleteProjectEnv } from '@/api/allocative/project'
+  import { findServiceList, refreshConfig} from '@/api/allocative/project'
   import waves from '@/directive/waves' // Waves directive
   import { parseTime } from '@/utils'
 
@@ -82,6 +100,7 @@
         tableKey: 0,
         list: null,
         envs:[],
+        instances:[],
         listLoading: true,
         bInAdd: false,
         listQuery: {
@@ -94,7 +113,12 @@
           envs: [],
           label: ''
         },
+        service:{
+          name:'',
+          port:undefined
+        },
         dialogFormVisible: false,
+        refreshFormVisible: false,
         dialogStatus: '',
         textMap: {
           update: 'Edit',
@@ -305,6 +329,40 @@
               message: '删除失败',
               duration: 2000
             });
+          }
+        })
+      },
+      resetRefresh(){
+        this.service={
+            name:'',
+            port:undefined
+        }
+      },
+      handleRefresh(row){
+        this.resetRefresh()
+        this.service.name=row.name
+        this.refreshFormVisible=true
+        findServiceList(row.name).then(response=>{
+          this.instances=response.data.data
+        })
+      },
+      refreshConfig(){
+        this.refreshFormVisible=false
+        let destination=this.service.name+":"+this.service.port
+        refreshConfig(destination).then(response=>{
+          const data=response.data.data
+          if(data.flag){
+            this.$notify({
+              title: '成功',
+              message: '刷新成功',
+              type: 'success'
+            })
+          }else{
+            this.$notify({
+              title: '失败',
+              message: '刷新失败',
+              duration: 1500
+            })
           }
         })
       }
