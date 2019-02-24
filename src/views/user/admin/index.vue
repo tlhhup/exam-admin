@@ -3,6 +3,7 @@
     <div class="filter-container">
       <el-input :placeholder="$t('table.userName')" v-model="listQuery.userName" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter"/>
       <el-button v-waves class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">{{ $t('table.search') }}</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleCreate">{{ $t('table.add') }}</el-button>
     </div>
 
     <el-table
@@ -65,11 +66,53 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.size" @pagination="getList" />
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible" width="40%">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="90px" style="width: 420px; margin-left:50px;">
+        <el-form-item :label="$t('table.realName')" prop="realName">
+          <el-input v-model="temp.realName"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.userName')" prop="userName">
+          <el-input v-model="temp.userName" :disabled="this.dialogStatus==='update'"/>
+        </el-form-item>
+        <!-- 编辑不可用 -->
+        <template v-if="this.dialogStatus==='create'">
+          <el-form-item :label="$t('login.password')" prop="password">
+            <el-input type="password" v-model="temp.password"/>
+          </el-form-item>
+          <el-form-item :label="$t('table.confirmPwd')" prop="confirmPwd">
+            <el-input type="password" v-model="temp.confirmPwd"/>
+          </el-form-item>
+        </template>
+        <!-- 编辑不可用 -->
+        <el-form-item :label="$t('table.national')" prop="national">
+          <el-input v-model="temp.national"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.email')" prop="email">
+          <el-input v-model="temp.email"/>
+        </el-form-item>
+        <el-form-item :label="$t('table.tel')" prop="tel">
+          <el-input v-model="temp.tel"/>
+        </el-form-item>
+        <!-- 编辑不可用 -->
+        <template v-if="this.dialogStatus==='create'">
+          <el-form-item :label="$t('table.status')">
+            <el-radio-group v-model="temp.active">
+              <el-radio v-for="item in statusOptions" :label="item.key">{{item.display_name}}</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </template>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">{{ $t('table.confirm') }}</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-  import { fetchList, checkPassword, updatePassword, resetPassword, activeOne, assignRole} from '@/api/user/admin'
+  import { fetchList, createOne, deleteOne, activeOne, updateOne} from '@/api/user/admin'
   import waves from '@/directive/waves' // Waves directive
   import { parseTime } from '@/utils'
   import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
@@ -86,6 +129,15 @@
     filters: {
     },
     data() {
+      var validateConfirmPwd = (rule, value, callback) => {
+        if (value==undefined||value === '') {
+          callback(new Error('请再次输入密码'));
+        } else if (value !== this.temp.password) {
+          callback(new Error('两次输入密码不一致!'));
+        } else {
+          callback();
+        }
+      };
       return {
         tableKey: 0,
         list: null,
@@ -100,15 +152,34 @@
         },
         statusOptions,
         temp: {
+          realName: '',
           userName: '',
+          national: '',
+          email: '',
+          tel: '',
+          active: true,
           pwd: '',
-          newPwd:'',
           confirmPwd:''
         },
         dialogFormVisible: false,
         dialogStatus: '',
+        textMap: {
+          update: 'Edit',
+          create: 'Create'
+        },
         rules: {
-
+          realName: [{ required: true, message: 'RealName is required', trigger: 'blur' }],
+          userName: [{ required: true, message: 'UserName is required', trigger: 'blur' }],
+          national: [{ required: true, message: 'National is required', trigger: 'blur' }],
+          email: [{ required: true, message: 'Email is required', trigger: 'blur' }],
+          tel: [{ required: true, message: 'Tel is required', trigger: 'blur' }],
+          password: [
+            { required: true, message: 'Password is required', trigger: 'blur' }
+          ],
+          confirmPwd: [
+            { validator: validateConfirmPwd, trigger: 'blur' },
+            { required: true, message: 'Confirm Password is required', trigger: 'blur' }
+          ]
         }
       }
     },
@@ -151,10 +222,14 @@
       },
       resetTemp() {
         this.temp = {
-          roleName: '',
-          description: '',
-          roleValue: 0,
-          active: true
+          realName: '',
+          userName: '',
+          national: '',
+          email: '',
+          tel: '',
+          active: true,
+          password: '',
+          confirmPwd:''
         }
       },
       handleActive(row) {
@@ -181,11 +256,92 @@
           }
         })
       },
+      handleCreate(){
+        this.resetTemp()
+        this.dialogStatus = 'create'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      createData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            const tempData = Object.assign({}, this.temp)
+            tempData.confirmPwd=undefined
+            createOne(tempData).then(response => {
+              this.dialogFormVisible = false
+              const data=response.data
+              if(data.data){
+                this.$notify({
+                  title: '成功',
+                  message: '创建成功',
+                  type: 'success',
+                  duration: 1500
+                })
+                this.getList()
+              }else{
+                this.$notify.error({
+                  title: '失败',
+                  message: '删除失败',
+                  duration: 2000
+                });
+              }
+            })
+          }
+        })
+      },
       handleUpdate(row){
-
+        this.temp = Object.assign({}, row) // copy obj
+        this.dialogStatus = 'update'
+        this.dialogFormVisible = true
+        this.$nextTick(() => {
+          this.$refs['dataForm'].clearValidate()
+        })
+      },
+      updateData() {
+        this.$refs['dataForm'].validate((valid) => {
+          if (valid) {
+            const tempData = Object.assign({}, this.temp)
+            tempData.confirmPwd=undefined
+            updateOne(tempData).then(() => {
+              for (const v of this.list) {
+                if (v.id === this.temp.id) {
+                  const index = this.list.indexOf(v)
+                  this.list.splice(index, 1, this.temp)
+                  break
+                }
+              }
+              this.dialogFormVisible = false
+              this.$notify({
+                title: '成功',
+                message: '更新成功',
+                type: 'success',
+                duration: 1500
+              })
+            })
+          }
+        })
       },
       handleDelete(row){
-
+        deleteOne(row.id).then(response=>{
+          const data=response.data
+          if(data.data){
+            this.$notify({
+              title: '成功',
+              message: '删除成功',
+              type: 'success',
+              duration: 1500
+            })
+            this.getList()
+          }else{
+            this.$notify.error({
+              title: '失败',
+              message: '删除失败',
+              duration: 2000
+            });
+          }
+        })
       }
     }
   }
