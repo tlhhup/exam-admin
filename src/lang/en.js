@@ -75,7 +75,11 @@ export default {
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
-    externalLink: 'External Link'
+    externalLink: 'External Link',
+    userCenter: 'User Center',
+    admin: 'Administrator',
+    teacher: 'Teacher',
+    student: 'Student'
   },
   common: {
     chooseIcon: 'Choose a icon',
@@ -196,7 +200,11 @@ export default {
     encryptionKeyList: 'Encryption Key List',
     envParam: ' Env Param',
     fresh: 'Refresh',
-    freshService: 'Service'
+    freshService: 'Service',
+    realName: 'RealName',
+    national: 'National',
+    email: 'Email',
+    tel: 'Tel'
   },
   tree: {
     icon: 'Icon',

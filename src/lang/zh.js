@@ -75,7 +75,11 @@ export default {
     theme: '换肤',
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
-    externalLink: '外链'
+    externalLink: '外链',
+    userCenter: '用户中心',
+    admin: '管理员',
+    teacher: '教师管理',
+    student: '学生管理'
   },
   common: {
     chooseIcon: '点击选择图标',
@@ -196,7 +200,11 @@ export default {
     encryptionKeyList: '加密Key清单',
     envParam: '环境参数',
     fresh: '刷新配置',
-    freshService: '实例信息'
+    freshService: '实例信息',
+    realName: '真实姓名',
+    national: '籍贯',
+    email: '邮件地址',
+    tel: '联系电话'
   },
   tree: {
     icon: '图标',
