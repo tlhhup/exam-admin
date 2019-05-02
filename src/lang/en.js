@@ -79,7 +79,12 @@ export default {
     userCenter: 'User Center',
     admin: 'Administrator',
     teacher: 'Teacher',
-    student: 'Student'
+    student: 'Student',
+    questionCenter: 'Question Bank',
+    subject: 'Subject',
+    type: 'Question Type',
+    point: 'Knowledge Point',
+    tag: 'Question Tag'
   },
   common: {
     chooseIcon: 'Choose a icon',
@@ -204,7 +209,11 @@ export default {
     realName: 'RealName',
     national: 'National',
     email: 'Email',
-    tel: 'Tel'
+    tel: 'Tel',
+    pointName: 'Knowledge Point',
+    subjectName: 'Subject',
+    tagName: 'Tag',
+    typeName: 'Type'
   },
   tree: {
     icon: 'Icon',

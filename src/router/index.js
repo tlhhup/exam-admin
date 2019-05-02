@@ -15,6 +15,7 @@ import authRouter from './modules/auth'
 import monitorRouter from './modules/monitor'
 import allocativeRouter from './modules/allocative'
 import userRouter from './modules/user'
+import questionRouter from './modules/question'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -104,6 +105,7 @@ export const asyncRouterMap = [
   authRouter,
   allocativeRouter,
   userRouter,
+  questionRouter,
   monitorRouter,
   /**
   {

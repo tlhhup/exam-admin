@@ -79,7 +79,12 @@ export default {
     userCenter: '用户中心',
     admin: '管理员',
     teacher: '教师管理',
-    student: '学生管理'
+    student: '学生管理',
+    questionCenter: '题库中心',
+    subject: '课程',
+    type: '题型',
+    point: '考点',
+    tag: '标签'
   },
   common: {
     chooseIcon: '点击选择图标',
@@ -204,7 +209,11 @@ export default {
     realName: '真实姓名',
     national: '籍贯',
     email: '邮件地址',
-    tel: '联系电话'
+    tel: '联系电话',
+    pointName: '知识点',
+    subjectName: '课程',
+    tagName: '标签',
+    typeName: '题型'
   },
   tree: {
     icon: '图标',
