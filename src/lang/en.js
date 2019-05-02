@@ -84,7 +84,9 @@ export default {
     subject: 'Subject',
     type: 'Question Type',
     point: 'Knowledge Point',
-    tag: 'Question Tag'
+    tag: 'Question Tag',
+    toolCenter: 'Tool Center',
+    codeGenerator: 'Code Generator'
   },
   common: {
     chooseIcon: 'Choose a icon',

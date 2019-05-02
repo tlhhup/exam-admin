@@ -84,7 +84,9 @@ export default {
     subject: '课程',
     type: '题型',
     point: '考点',
-    tag: '标签'
+    tag: '标签',
+    toolCenter: '工具中心',
+    codeGenerator: '代码生成器'
   },
   common: {
     chooseIcon: '点击选择图标',

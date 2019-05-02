@@ -16,6 +16,7 @@ import monitorRouter from './modules/monitor'
 import allocativeRouter from './modules/allocative'
 import userRouter from './modules/user'
 import questionRouter from './modules/question'
+import codeRouter from './modules/generator'
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -107,6 +108,7 @@ export const asyncRouterMap = [
   userRouter,
   questionRouter,
   monitorRouter,
+  codeRouter,
   /**
   {
     path: '/permission',
