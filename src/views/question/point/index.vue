@@ -144,9 +144,15 @@
       getList() {
         this.listLoading = true
         fetchList(this.listQuery).then(response => {
+          this.listQuery.pointName = undefined
           const data=response.data.data
-          this.list = data.items
-          this.total = data.total
+          if(data!=null) {
+            this.list = data.items
+            this.total = data.total
+          }else {
+            this.list=null
+            this.total=0
+          }
 
           // Just to simulate the time of the request
           setTimeout(() => {
@@ -157,7 +163,6 @@
       handleFilter() {
         this.listQuery.page = 1
         this.getList()
-        this.listQuery.pointName = undefined
       },
       resetTemp() {
         this.temp = {
