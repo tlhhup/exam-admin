@@ -8,6 +8,13 @@ export function fetchList(query) {
   })
 }
 
+export function fetchAll() {
+  return request({
+    url: '/question/QuestionType/all',
+    method: 'get'
+  })
+}
+
 export function fetchOne(id) {
   return request({
     url: '/question/QuestionType/detail/' + id,

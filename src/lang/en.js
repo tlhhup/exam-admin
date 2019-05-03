@@ -86,7 +86,8 @@ export default {
     point: 'Knowledge Point',
     tag: 'Question Tag',
     toolCenter: 'Tool Center',
-    codeGenerator: 'Code Generator'
+    codeGenerator: 'Code Generator',
+    question: 'Question'
   },
   common: {
     chooseIcon: 'Choose a icon',
@@ -215,7 +216,10 @@ export default {
     pointName: 'Knowledge Point',
     subjectName: 'Subject',
     tagName: 'Tag',
-    typeName: 'Type'
+    typeName: 'Type',
+    question: 'Question Name',
+    questionContent: 'Question Content',
+    creatorName: 'Creator'
   },
   tree: {
     icon: 'Icon',

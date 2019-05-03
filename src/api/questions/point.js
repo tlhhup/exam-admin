@@ -8,6 +8,13 @@ export function fetchList(query) {
   })
 }
 
+export function fetchAll() {
+  return request({
+    url: '/question/KnowledgePoint/all',
+    method: 'get'
+  })
+}
+
 export function fetchOne(id) {
   return request({
     url: '/question/KnowledgePoint/detail/' + id,

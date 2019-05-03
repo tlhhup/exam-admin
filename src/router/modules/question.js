@@ -31,8 +31,14 @@ const questionRouter = {
     {
       path: 'tag',
       component: () => import('@/views/question/tag/index'),
-      name: 'student',
+      name: 'tag',
       meta: { title: 'tag', icon: 'system_user' }
+    },
+    {
+      path: 'question',
+      component: () => import('@/views/question/question/index'),
+      name: 'question',
+      meta: { title: 'question', icon: 'system_user' }
     }
   ]
 }

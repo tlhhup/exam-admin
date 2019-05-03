@@ -86,7 +86,8 @@ export default {
     point: '考点',
     tag: '标签',
     toolCenter: '工具中心',
-    codeGenerator: '代码生成器'
+    codeGenerator: '代码生成器',
+    question: '题目'
   },
   common: {
     chooseIcon: '点击选择图标',
@@ -215,7 +216,10 @@ export default {
     pointName: '知识点',
     subjectName: '课程',
     tagName: '标签',
-    typeName: '题型'
+    typeName: '题型',
+    question: '问题名称',
+    questionContent: '问题内容',
+    creatorName: '创建人'
   },
   tree: {
     icon: '图标',
